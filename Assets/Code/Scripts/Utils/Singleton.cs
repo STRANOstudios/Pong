@@ -1,7 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace Code.Systems.Utils
+namespace AndreaFrigerio.Service.Utils
 {
     /// <summary>
     /// Generic MonoBehaviour-based Singleton pattern.

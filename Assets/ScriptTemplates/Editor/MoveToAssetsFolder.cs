@@ -27,7 +27,7 @@ public class MoveToAssetsFolder
             // Check if it's a folder and not some random asset
             if (AssetDatabase.IsValidFolder(path))
             {
-                // Ensure exact match of the name and that it's not in the Assets folder already
+                // Ensure exact match of the Name and that it's not in the Assets folder already
                 string folderName = System.IO.Path.GetFileName(path);
                 if (folderName == targetFolder && !path.StartsWith(targetPath))
                 {

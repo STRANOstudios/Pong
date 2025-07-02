@@ -1,4 +1,4 @@
-﻿namespace Code.Systems.Locator
+﻿namespace AndreaFrigerio.Service.Locator
 {
     public interface IFixedUpdateService
     {

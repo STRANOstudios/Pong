@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using Code.Systems.Utils;
+using AndreaFrigerio.Service.Utils;
 
-namespace Code.Systems.Locator
+namespace AndreaFrigerio.Service.Locator
 {
     [DefaultExecutionOrder(-100)]
     public class ServiceLocator : Singleton<ServiceLocator>
@@ -58,8 +58,12 @@ namespace Code.Systems.Locator
         #region Registration & Unregistration
 
         /// <summary>
-        /// Registers a service of type T. Overwrites any existing service of the same type.
+        /// Registers a service instance of type <typeparamref name="T"/>.
+        /// If a service of the same type is already registered, it will be overwritten.
+        /// Also adds the service to specialized update dictionaries if applicable.
         /// </summary>
+        /// <typeparam name="T">The type of the service to register.</typeparam>
+        /// <param name="service">The service instance to register.</param>
         public static void Register<T>(T service)
         {
             var type = typeof(T);
@@ -88,21 +92,29 @@ namespace Code.Systems.Locator
         }
 
         /// <summary>
-        /// Unregisters a service of type T and removes it from all service collections.
+        /// Instantiates and registers a new service of type <typeparamref name="T"/> using its parameterless constructor.
         /// </summary>
-        public static void Unregister<T>()
+        /// <typeparam name="T">The type of the service to register.</typeparam>
+        public static void Register<T>() where T : new() => Register(new T());
+
+        /// <summary>
+        /// Unregisters the given service instance of type <typeparamref name="T"/>.
+        /// Removes it from all relevant service collections.
+        /// </summary>
+        /// <typeparam name="T">The type of the service to unregister.</typeparam>
+        /// <param name="service">The service instance to unregister.</param>
+        public static void Unregister<T>(T service)
         {
             var type = typeof(T);
 
-            if (m_services.TryGetValue(type, out var service))
+            if (m_services.TryGetValue(type, out var registered) && ReferenceEquals(registered, service))
             {
-                // Clean up from specialized dictionaries
-                if (service is IUpdateService)
+                if (registered is IUpdateService)
                 {
                     m_updateServices.Remove(type);
                 }
 
-                if (service is IFixedUpdateService)
+                if (registered is IFixedUpdateService)
                 {
                     m_FixedUpdateServices.Remove(type);
                 }
@@ -113,19 +125,29 @@ namespace Code.Systems.Locator
                 Instance?.PopulateSerializedServices();
 #endif
             }
+            else
+            {
+                Debug.LogWarning($"Attempted to unregister service of type {type.Name}, but it was not registered or did not match the provided instance.");
+            }
         }
+
+        /// <summary>
+        /// Unregisters the currently registered service of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the service to unregister.</typeparam>
+        public static void Unregister<T>() => Unregister<T>(Get<T>());
 
         #endregion
 
         #region Getters
 
         /// <summary>
-        /// Retrieves a registered service of type T.
+        /// Retrieves the registered service of type <typeparamref name="T"/>.
         /// Throws an exception if the service is not found.
         /// </summary>
-        /// <remarks>
-        /// Prefer using <see cref="TryGet{T}(out T)"/> when failure is expected or optional.
-        /// </remarks>
+        /// <typeparam name="T">The type of the service to retrieve.</typeparam>
+        /// <returns>The registered service instance of type <typeparamref name="T"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if the service is not registered.</exception>
         public static T Get<T>()
         {
             if (m_services.TryGetValue(typeof(T), out var service))
@@ -137,9 +159,12 @@ namespace Code.Systems.Locator
         }
 
         /// <summary>
-        /// Retrieves a registered service of type T.
-        /// Returns false if the service is not found.
+        /// Tries to retrieve the registered service of type <typeparamref name="T"/>.
+        /// Returns true if found, otherwise false.
         /// </summary>
+        /// <typeparam name="T">The type of the service to retrieve.</typeparam>
+        /// <param name="service">When this method returns, contains the service if found; otherwise, the default value for the type.</param>
+        /// <returns><c>true</c> if the service is registered; otherwise, <c>false</c>.</returns>
         public static bool TryGet<T>(out T service)
         {
             if (m_services.TryGetValue(typeof(T), out var obj))
@@ -153,16 +178,17 @@ namespace Code.Systems.Locator
         }
 
         /// <summary>
-        /// Retrieves all registered services.
+        /// Returns all currently registered services as an enumerable collection.
         /// </summary>
+        /// <returns>An <see cref="IEnumerable{Object}"/> of all registered services.</returns>
         public static IEnumerable<object> GetAllServices() => m_services.Values;
 
         #endregion
 
         #region Setters
-        
+
         /// <summary>
-        /// Clears all registered services.
+        /// Clears all registered services from the locator, including update-related services.
         /// </summary>
         public static void Clear()
         {
