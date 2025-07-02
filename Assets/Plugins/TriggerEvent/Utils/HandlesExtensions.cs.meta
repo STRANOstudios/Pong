@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 6413ed5ef4f3af1489c3bc1185375ba3
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Utils/HandlesExtensions.cs
+  uploadId: 768018

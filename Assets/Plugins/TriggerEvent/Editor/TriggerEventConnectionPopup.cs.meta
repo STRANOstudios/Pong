@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: bd9ebde8507c3ce4dba93f19001acd5e
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Editor/TriggerEventConnectionPopup.cs
+  uploadId: 768018

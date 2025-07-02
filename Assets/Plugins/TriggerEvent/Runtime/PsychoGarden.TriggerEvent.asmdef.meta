@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6d46152eb879e9249a0b4122356a2d87
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Runtime/PsychoGarden.TriggerEvent.asmdef
+  uploadId: 768018

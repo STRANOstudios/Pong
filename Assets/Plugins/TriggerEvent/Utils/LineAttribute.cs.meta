@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b4099a7affe09b04185ad38eefa56b7b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Utils/LineAttribute.cs
+  uploadId: 768018

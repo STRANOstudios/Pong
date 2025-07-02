@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e4e7360488c2f0d4f95b4a7eb3a8b385
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Documentation/License.txt
+  uploadId: 768018

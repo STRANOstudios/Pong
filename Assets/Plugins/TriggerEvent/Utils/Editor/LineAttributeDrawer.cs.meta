@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a4f229696dedd594f9080afcc67aeed2
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Utils/Editor/LineAttributeDrawer.cs
+  uploadId: 768018

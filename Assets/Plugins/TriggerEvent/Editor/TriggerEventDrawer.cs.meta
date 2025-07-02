@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: ed7743842808ca7449efac0c0bba7fc2
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Editor/TriggerEventDrawer.cs
+  uploadId: 768018

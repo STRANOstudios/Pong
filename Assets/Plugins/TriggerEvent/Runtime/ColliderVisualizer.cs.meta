@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: dfe1477edc16e1d4fb194be791aaef15
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Runtime/ColliderVisualizer.cs
+  uploadId: 768018

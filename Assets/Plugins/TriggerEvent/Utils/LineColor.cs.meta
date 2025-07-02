@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 625c1590556388648b062fb99cadf96c
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Utils/LineColor.cs
+  uploadId: 768018

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fab8eb41069409640a9533b4816ccffd
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Demo/DemoSceneTrigger.unity
+  uploadId: 768018

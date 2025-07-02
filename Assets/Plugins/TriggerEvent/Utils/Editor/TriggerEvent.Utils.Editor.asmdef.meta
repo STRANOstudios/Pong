@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9b1de9792c8865d4c96f89ef65583925
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Utils/Editor/TriggerEvent.Utils.Editor.asmdef
+  uploadId: 768018

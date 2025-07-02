@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5175714dcc435214d87af146cd0d56fe
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Documentation/README.md
+  uploadId: 768018

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: df2ad4f92ca45984ab04e46b2f52aeb2
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Editor/EditorPrefsUtils.cs
+  uploadId: 768018

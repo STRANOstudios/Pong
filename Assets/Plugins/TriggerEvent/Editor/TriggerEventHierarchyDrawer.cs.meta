@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 0fe8f816fcf571041beddd68999a5130
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318706
+  packageName: TriggerEvent
+  packageVersion: 1.1.2
+  assetPath: Assets/TriggerEvent/Editor/TriggerEventHierarchyDrawer.cs
+  uploadId: 768018
