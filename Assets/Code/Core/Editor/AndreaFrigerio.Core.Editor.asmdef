@@ -1,0 +1,18 @@
+{
+    "name": "AndreaFrigerio.Core.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:476ef0e965269ee4da54c88fcad19826"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

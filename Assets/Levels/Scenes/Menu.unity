@@ -128,7 +128,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 292481605}
-  - component: {fileID: 292481611}
   - component: {fileID: 292481606}
   - component: {fileID: 292481609}
   - component: {fileID: 292481610}
@@ -209,57 +208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a63e9a23a153534bafa44259133268d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ipInputField: {fileID: 2053143655}
-  transport: {fileID: 292481606}
---- !u!114 &292481611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292481604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf12c440ed84b5f4ba74b457adf1af1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
-  runInBackground: 1
-  headlessStartMode: 0
-  editorAutoStart: 0
-  sendRate: 60
-  offlineScene: 
-  onlineScene: Assets/Levels/Scenes/PongOnline.unity
-  offlineSceneLoadDelay: 0
-  transport: {fileID: 292481606}
-  networkAddress: localhost
-  maxConnections: 2
-  disconnectInactiveConnections: 0
-  disconnectInactiveTimeout: 60
-  authenticator: {fileID: 0}
-  playerPrefab: {fileID: 1240244544407914, guid: b1651eaf8c7564a1c86031dfbb8a7b28, type: 3}
-  autoCreatePlayer: 1
-  playerSpawnMethod: 1
-  spawnPrefabs:
-  - {fileID: 1080679924113744, guid: 5f7a7f34494ed40268eff49dbf9168bf, type: 3}
-  exceptionsDisconnect: 1
-  snapshotSettings:
-    bufferTimeMultiplier: 2
-    bufferLimit: 32
-    catchupNegativeThreshold: -1
-    catchupPositiveThreshold: 1
-    catchupSpeed: 0.019999999552965164
-    slowdownSpeed: 0.03999999910593033
-    driftEmaDuration: 1
-    dynamicAdjustment: 1
-    dynamicAdjustmentTolerance: 1
-    deliveryTimeEmaDuration: 2
-  evaluationMethod: 0
-  evaluationInterval: 3
-  timeInterpolationGui: 0
-  leftRacketSpawn: {x: -8, y: 0, z: 0}
-  rightRacketSpawn: {x: 8, y: 0, z: 0}
-  mainMenuScene: Menu
+  m_ipInputField: {fileID: 2053143655}
+  m_transport: {fileID: 292481606}
 --- !u!1 &321612533
 GameObject:
   m_ObjectHideFlags: 0
@@ -1761,8 +1711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efe1eeb492e563b49865090ba1590f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetFrameRate: 30
-  vSyncSetting: 0
+  m_targetFrameRate: 60
+  m_vSyncSetting: 0
 --- !u!114 &1032641177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1775,8 +1725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2e7a351ca95a2e4dbcd58baef9f848b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showCursor: 0
-  lockCursor: 1
+  m_showCursor: 1
+  m_lockCursor: 0
 --- !u!224 &1089152903 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4511888622965835142, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
@@ -4051,7 +4001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84f7377408059e4f895ff54d1c180a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputField: {fileID: 2053143655}
+  m_inputField: {fileID: 0}
 --- !u!1001 &2132596180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4322,7 +4272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231318f84dc7ebf479a8ce6ad2e8ebb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UIElement: {fileID: 384620218}
+  m_uiElement: {fileID: 384620218}
 --- !u!4 &2141066187
 Transform:
   m_ObjectHideFlags: 0

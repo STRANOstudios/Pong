@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 825689372044782512}
-  - component: {fileID: 7451887247766263890}
   m_Layer: 0
   m_Name: Paddle (Player)
   m_TagString: Untagged
@@ -33,28 +32,6 @@ Transform:
   - {fileID: 7635282853538165161}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7451887247766263890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7759697012689633343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7573a345d594640b9616251b354c7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: 5
-  Input:
-    rid: 7599439600329949392
-  references:
-    version: 2
-    RefIds:
-    - rid: 7599439600329949392
-      type: {class: PlayerPaddleInput, ns: AndreaFrigerio.Gameplay.Paddle, asm: Assembly-CSharp}
-      data:
-        selectedAction: {fileID: 0}
 --- !u!1 &8469669232193600672
 GameObject:
   m_ObjectHideFlags: 0
