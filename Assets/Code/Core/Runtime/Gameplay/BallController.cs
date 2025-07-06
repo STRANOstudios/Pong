@@ -177,6 +177,20 @@
 
         #endregion
 
+        #region Server
+
+        /// <summary>
+        /// Sets the visibility of the ball and its collider.
+        /// </summary>
+        /// <param name="value">The new visibility state.</param>
+        public void SetVisible(bool value)
+        {
+            this.GetComponentInChildren<SpriteRenderer>().enabled = value;
+            this.GetComponent<Collider2D>().enabled = value;
+        }
+
+        #endregion
+
         #region Client – bounce feedback
 
         private enum BounceType : byte { Paddle = 0, Wall = 1 }

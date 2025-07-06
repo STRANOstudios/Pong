@@ -26,6 +26,11 @@ namespace AndreaFrigerio.UI.Runtime.HUD
         [SerializeField, Required]
         private TMP_Text m_scoreText;
 
+        [BoxGroup("References")]
+        [Tooltip("Target for graphics.")]
+        [SerializeField, Required]
+        private GameObject m_graphicsTarget;
+
         #endregion
 
         #region Static convenience
@@ -41,8 +46,12 @@ namespace AndreaFrigerio.UI.Runtime.HUD
         public static void ShowGlobal(PlayerSide winner, int left, int right)
         {
             s_instance?.Show(winner, left, right);
-            s_instance?.gameObject.SetActive(true);
         }
+
+        /// <summary>
+        /// Hides the panel on every client. Called by <c>PongGameManager</c>.
+        /// </summary>
+        public static void HideGlobal() => s_instance?.Hide();
 
         #endregion
 
@@ -51,7 +60,7 @@ namespace AndreaFrigerio.UI.Runtime.HUD
         private void Awake()
         {
             s_instance = this;
-            this.gameObject.SetActive(false);
+            Hide();
         }
 
         #endregion
@@ -63,10 +72,18 @@ namespace AndreaFrigerio.UI.Runtime.HUD
         /// </summary>
         private void Show(PlayerSide winner, int left, int right)
         {
+            Debug.Log($"VictoryPanel.Show({winner}, {left}, {right})");
+            this.m_graphicsTarget.SetActive(true);
+
             string playerName = winner == PlayerSide.Left ? "PLAYER 1" : "PLAYER 2";
             this.m_winnerText.SetText($"{playerName} WINS");
             this.m_scoreText.SetText($"{left} – {right}");
         }
+
+        /// <summary>
+        /// Hides the panel.
+        /// </summary>
+        public void Hide() => this.m_graphicsTarget.SetActive(false);
 
         #endregion
 
@@ -81,7 +98,7 @@ namespace AndreaFrigerio.UI.Runtime.HUD
             if (NetworkClient.active)
             {
                 CmdRequestReplay();
-                this.gameObject.SetActive(false);
+                Hide();
             }
         }
 

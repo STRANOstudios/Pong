@@ -10,6 +10,7 @@ namespace AndreaFrigerio.Core.Runtime.Gameplay
     /// ball crossed it, a point is awarded to the opposing side.
     /// </summary>
     [HideMonoScript]
+    [DefaultExecutionOrder(-100)]
     [RequireComponent(typeof(BoxCollider2D), typeof(NetworkIdentity))]
     [AddComponentMenu("Andrea Frigerio/Game/Goal Detector")]
     public sealed class GoalDetector : NetworkBehaviour
@@ -19,6 +20,7 @@ namespace AndreaFrigerio.Core.Runtime.Gameplay
         [SerializeField] 
         private PlayerSide m_side;
 
+        [Sirenix.OdinInspector.ShowInInspector, Sirenix.OdinInspector.ReadOnly]
         private IScoreService m_score;
 
         /// <summary>
@@ -39,10 +41,9 @@ namespace AndreaFrigerio.Core.Runtime.Gameplay
                 return;
             }
 
-            PlayerSide scorer =
-                this.m_side == PlayerSide.Left ? PlayerSide.Right : PlayerSide.Left;
-
-            this.m_score.ServerAddScore(scorer);
+            m_score ??= ServiceLocator.Get<IScoreService>(); // lazy fetch
+            PlayerSide scorer = m_side == PlayerSide.Left ? PlayerSide.Right : PlayerSide.Left;
+            m_score.ServerAddScore(scorer);
         }
     }
 }

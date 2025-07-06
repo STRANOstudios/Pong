@@ -112,6 +112,7 @@
         /// </summary>
         public override void OnStartServer()
         {
+            ServiceLocator.Register(this);
             ServiceLocator.Register<IScoreService>(this);
             SpawnAndLaunchBall();
             UpdateHud();
@@ -123,8 +124,11 @@
         public override void OnStartClient() => UpdateHud();
 
         /// <inheritdoc/>
-        public override void OnStopServer() =>
+        public override void OnStopServer()
+        {
+            ServiceLocator.Unregister(this);
             ServiceLocator.Unregister<IScoreService>(this);
+        }
 
         #endregion
 
@@ -169,7 +173,7 @@
         [Server]
         private void EndMatch(PlayerSide winner)
         {
-            this.m_ballInstance.gameObject.SetActive(false);
+            this.m_ballInstance.SetVisible(false);
             RpcGameWon(winner, this.m_scoreLeft, this.m_scoreRight);
         }
 
@@ -184,18 +188,24 @@
         }
 
         /// <summary>
+        /// Client Rpc that hides the victory panel.
+        /// </summary>
+        [ClientRpc]
+        private void RpcHideVictoryPanel() => VictoryPanel.HideGlobal();
+
+        /// <summary>
         /// Called by <see cref="VictoryPanel"/> via Cmd. Resets scores and
         /// restarts a fresh rally.
         /// </summary>
         [Server]
         public void ServerRequestReplay()
         {
-            this.m_scoreLeft = 0;
-            this.m_scoreRight = 0;
+            this.m_scoreLeft = this.m_scoreRight = 0;
             UpdateHud();
 
-            this.m_ballInstance.gameObject.SetActive(true);
+            this.m_ballInstance.SetVisible(true);
             ResetBall(UnityEngine.Random.value < .5f ? Vector2.right : Vector2.left);
+            RpcHideVictoryPanel();
         }
 
         #endregion
