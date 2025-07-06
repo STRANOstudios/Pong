@@ -183,8 +183,8 @@
         [ClientRpc]
         private void RpcGameWon(PlayerSide winner, int left, int right)
         {
-            this.m_onWin?.Invoke(this.transform); 
             VictoryPanel.ShowGlobal(winner, left, right);
+            this.m_onWin?.Invoke(this.transform);
         }
 
         /// <summary>

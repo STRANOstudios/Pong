@@ -55,6 +55,7 @@ namespace AndreaFrigerio.UI.Runtime.Navigation
         /// Immediately selects the given UI element.
         /// </summary>
         /// <param name="selectable">Target element to focus.</param>
+        [Button("Select")]
         public void Select(Selectable selectable)
         {
             if (selectable != null)
