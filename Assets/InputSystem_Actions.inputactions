@@ -15,6 +15,24 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "MovePaddle_Player1",
+                    "type": "Value",
+                    "id": "edded5e3-7657-450f-b811-12616efd1e34",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MovePaddle_Player2",
+                    "type": "Value",
+                    "id": "bd9b6dcd-b330-41e6-ae3b-a6db7d1ec6b0",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
@@ -81,6 +99,39 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "Keyboard",
+                    "id": "8ba0c229-55df-4311-ab30-e6385cb30167",
+                    "path": "Dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePaddle_Player1",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "0697e8b7-3924-48da-9e49-c658ea6d869f",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "MovePaddle_Player1",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "2f4996d4-b8bf-4cef-93f6-9b8f60b8ce8e",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "MovePaddle_Player1",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "35bb428c-8dfd-4fdb-af53-4951479b9caa",
                     "path": "<Keyboard>/escape",
@@ -101,6 +152,39 @@
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "a45a8a13-0c08-4568-869d-5c50310ae3ec",
+                    "path": "Dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePaddle_Player2",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "8092bafb-7eac-43e8-a1a9-bf1b44f893d3",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "MovePaddle_Player2",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "d2b0a66b-a415-45da-be89-28489ee8999c",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "MovePaddle_Player2",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -129,7 +213,7 @@
                 {
                     "name": "Cancel",
                     "type": "Button",
-                    "id": "15cef263-9014-4fd5-94d9-4e4a6234a6ef",
+                    "id": "1c072b87-d35f-49a4-a2fc-49688fdfd1a4",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -260,11 +344,33 @@
                 },
                 {
                     "name": "",
-                    "id": "82627dcc-3b13-4ba9-841d-e4b746d6553e",
-                    "path": "*/{Cancel}",
+                    "id": "65b7951d-de40-4948-833f-b67cbf50597c",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5f93a04-2fa7-4db5-924b-7fbd8ea620ff",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d0933d51-0a46-4581-8c2e-cfade0f3386b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
