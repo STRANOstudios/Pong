@@ -36,10 +36,16 @@
 
         #region Unity Callbacks
 
-        private void Awake()
+        private void OnEnable()
         {
             this.m_inputField.onValueChanged.AddListener(this.OnValueChanged);
             this.m_inputField.onEndEdit.AddListener(this.OnEndEdit);
+        }
+
+        private void OnDisable()
+        {
+            this.m_inputField.onValueChanged.RemoveListener(this.OnValueChanged);
+            this.m_inputField.onEndEdit.RemoveListener(this.OnEndEdit);
         }
 
         #endregion

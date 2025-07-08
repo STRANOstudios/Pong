@@ -191,7 +191,7 @@
         /// Returns the unique instance of type <typeparamref name="T"/>.
         /// </summary>
         public static T Get<T>() =>
-            s_services.TryGetValue(typeof(T), out var o)
+            s_services.TryGetValue(typeof(T), out object o)
                 ? (T)o
                 : throw new KeyNotFoundException($"Service {typeof(T).Name} not found.");
 

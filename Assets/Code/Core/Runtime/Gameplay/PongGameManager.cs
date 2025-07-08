@@ -6,7 +6,8 @@
     using Sirenix.OdinInspector;
     using AndreaFrigerio.Core.Runtime.Locator;
     using AndreaFrigerio.UI.Runtime.HUD;
-    using PsychoGarden.TriggerEvents;
+    using System.Collections.Generic;
+    using AndreaFrigerio.Networking.Runtime.Mirror;
 
     /// <summary>
     /// Server-authoritative match controller.<br/>
@@ -19,49 +20,37 @@
     [RequireComponent(typeof(NetworkIdentity))]
     public sealed class PongGameManager : NetworkBehaviour, IScoreService
     {
-        #region Inspector
+        #region Exposed Members
 
         [BoxGroup("Settings")]
         [Tooltip("Ball prefab spawned by the server."), AssetsOnly]
-        [SerializeField] 
+        [SerializeField]
         private BallController m_ballPrefab;
 
         [BoxGroup("Settings")]
         [Tooltip("Half height of the playing field (UU)."), MinValue(0f)]
-        [SerializeField] 
-        private float m_halfFieldHeight = 5f;
+        [SerializeField]
+        private float m_halfCourt = 5f;
 
         [BoxGroup("Settings")]
         [Tooltip("Points required to win the match."), MinValue(1)]
-        [SerializeField] 
+        [SerializeField]
         private int m_scoreToWin = 11;
-
-        [BoxGroup("Settings")]
-        [Tooltip("Event raised on every victory.")]
-        [SerializeField] 
-        private TriggerEvent m_onWin;
 
         [BoxGroup("References")]
         [Tooltip("Scene-level HUD component."), Required, SceneObjectsOnly]
-        [SerializeField] 
+        [SerializeField]
         private ScoreHUD m_hud;
 
         #endregion
 
-        #region SyncVars
+        #region Private Members
 
-        [SyncVar(hook = nameof(OnScoreChanged))] private int m_scoreLeft;
-        [SyncVar(hook = nameof(OnScoreChanged))] private int m_scoreRight;
+        [SyncVar(hook = nameof(HookScore))] private int m_left;
+        [SyncVar(hook = nameof(HookScore))] private int m_right;
 
-        #endregion
-
-        #region Private state
-
-        private BallController m_ballInstance;
-
-        #endregion
-
-        #region Events
+        private BallController m_ball;
+        private readonly HashSet<int> m_votes = new();
 
         /// <summary>
         /// Raised client-side when a goal is scored.
@@ -70,32 +59,38 @@
 
         #endregion
 
-        #region IScoreService
+        #region SERVER
 
-        /// <inheritdoc/>
+        public override void OnStartServer()
+        {
+            ServiceLocator.Register(this);
+            ServiceLocator.Register<IScoreService>(this);
+            SpawnBall();
+            UpdateHud();
+        }
+
+        public override void OnStopServer()
+        {
+            ServiceLocator.Unregister<IScoreService>(this);
+            ServiceLocator.Unregister(this);
+        }
+
         [Server]
         public void ServerAddScore(PlayerSide scorer)
         {
             if (scorer == PlayerSide.Left)
             {
-                this.m_scoreLeft++;
+                this.m_left++;
             }
             else
             {
-                this.m_scoreRight++;
+                this.m_right++;
             }
 
-            bool hasWinner = this.m_scoreLeft >= this.m_scoreToWin ||
-                             this.m_scoreRight >= this.m_scoreToWin;
-
-            RpcOnGoalScored(scorer);
-
-            if (hasWinner)
+            bool win = this.m_left >= this.m_scoreToWin || this.m_right >= this.m_scoreToWin;
+            if (win)
             {
-                PlayerSide winner = this.m_scoreLeft >= this.m_scoreToWin
-                                        ? PlayerSide.Left
-                                        : PlayerSide.Right;
-                EndMatch(winner);
+                EndMatch(this.m_left > this.m_right ? PlayerSide.Left : PlayerSide.Right);
             }
             else
             {
@@ -103,128 +98,73 @@
             }
         }
 
-        #endregion
-
-        #region Unity life-cycle
-
-        /// <summary>
-        /// Registers the score service and starts the first rally.
-        /// </summary>
-        public override void OnStartServer()
-        {
-            ServiceLocator.Register(this);
-            ServiceLocator.Register<IScoreService>(this);
-            SpawnAndLaunchBall();
-            UpdateHud();
-        }
-
-        /// <summary>
-        /// Synchronises HUD for late-join clients.
-        /// </summary>
-        public override void OnStartClient() => UpdateHud();
-
-        /// <inheritdoc/>
-        public override void OnStopServer()
-        {
-            ServiceLocator.Unregister(this);
-            ServiceLocator.Unregister<IScoreService>(this);
-        }
-
-        #endregion
-
-        #region Ball management
-
-        /// <summary>
-        /// Instantiates the ball once and launches the first serve.
-        /// </summary>
-        [Server]
-        private void SpawnAndLaunchBall()
-        {
-            this.m_ballInstance = Instantiate(this.m_ballPrefab);
-            NetworkServer.Spawn(this.m_ballInstance.gameObject);
-
-            Vector2 dir = UnityEngine.Random.value < .5f ? Vector2.right : Vector2.left;
-            ResetBall(dir);
-        }
-
-        /// <summary>
-        /// Moves the ball to centre-line random Y and launches it in
-        /// <paramref name="dir"/>. Called after each goal.
-        /// </summary>
-        /// <param name="dir">Normalized serve direction.</param>
-        [Server]
-        private void ResetBall(Vector2 dir)
-        {
-            float randY = UnityEngine.Random.Range(-this.m_halfFieldHeight,
-                                                    this.m_halfFieldHeight);
-
-            this.m_ballInstance.transform.position = new Vector2(0f, randY);
-            this.m_ballInstance.ResetForNewRound(dir);
-        }
-
-        #endregion
-
-        #region Victory & replay
-
-        /// <summary>
-        /// Handles end-of-match: hides ball and notifies clients.
-        /// </summary>
-        /// <param name="winner">Side that reached <see cref="m_scoreToWin"/>.</param>
         [Server]
         private void EndMatch(PlayerSide winner)
         {
-            this.m_ballInstance.SetVisible(false);
-            RpcGameWon(winner, this.m_scoreLeft, this.m_scoreRight);
+            this.m_ball.SetVisible(false);
+            RpcShowVictory(winner, this.m_left, this.m_right);
+            this.m_votes.Clear();
         }
 
-        /// <summary>
-        /// Client Rpc that shows the victory panel.
-        /// </summary>
-        [ClientRpc]
-        private void RpcGameWon(PlayerSide winner, int left, int right)
-        {
-            VictoryPanel.ShowGlobal(winner, left, right);
-            this.m_onWin?.Invoke(this.transform);
-        }
-
-        /// <summary>
-        /// Client Rpc that hides the victory panel.
-        /// </summary>
-        [ClientRpc]
-        private void RpcHideVictoryPanel() => VictoryPanel.HideGlobal();
-
-        /// <summary>
-        /// Called by <see cref="VictoryPanel"/> via Cmd. Resets scores and
-        /// restarts a fresh rally.
-        /// </summary>
         [Server]
-        public void ServerRequestReplay()
+        public void VoteRestart(int connId)
         {
-            this.m_scoreLeft = this.m_scoreRight = 0;
-            UpdateHud();
+            if (!NetworkServer.connections.ContainsKey(connId))
+            {
+                return;
+            }
 
-            this.m_ballInstance.SetVisible(true);
-            ResetBall(UnityEngine.Random.value < .5f ? Vector2.right : Vector2.left);
-            RpcHideVictoryPanel();
+            this.m_votes.Add(connId);
+            if (this.m_votes.Count == NetworkServer.connections.Count)
+            {
+                RestartMatch();
+            }
+        }
+
+        [Server] 
+        public void VoteQuit() => NetworkManager.singleton.StopHost();
+
+        [Server]
+        private void RestartMatch()
+        {
+            this.m_left = this.m_right = 0; UpdateHud();
+            ((CustomNetworkManager)NetworkManager.singleton).ResetPlayersPosition();
+            this.m_ball.SetVisible(true);
+            ResetBall(UnityEngine.Random.value < .5f ? Vector2.left : Vector2.right);
+            RpcHideVictory();
+        }
+
+        [Server]
+        private void SpawnBall()
+        {
+            this.m_ball = Instantiate(this.m_ballPrefab);
+            NetworkServer.Spawn(this.m_ball.gameObject);
+            ResetBall(UnityEngine.Random.value < .5f ? Vector2.left : Vector2.right);
+        }
+
+        [Server]
+        private void ResetBall(Vector2 dir)
+        {
+            float y = UnityEngine.Random.Range(-this.m_halfCourt, this.m_halfCourt);
+            this.m_ball.transform.position = new Vector2(0, y);
+            this.m_ball.ResetForNewRound(dir);
         }
 
         #endregion
 
-        #region HUD & SyncVar hook
+        #region Client
 
-        /// <summary>Updates the <see cref="ScoreHUD"/> on host and clients.</summary>
-        private void UpdateHud() =>
-            this.m_hud?.UpdateScores(this.m_scoreLeft, this.m_scoreRight);
+        public override void OnStartClient() => UpdateHud();
 
-        /// <summary>Mirror hook invoked when either score changes.</summary>
-        private void OnScoreChanged(int _, int __) => UpdateHud();
+        private void HookScore(int _, int __) => UpdateHud();
 
-        #endregion
+        private void UpdateHud() => this.m_hud?.UpdateScores(this.m_left, this.m_right);
 
-        #region Client Rpcs
+        [ClientRpc] 
+        void RpcShowVictory(PlayerSide w, int l, int r) => VictoryPanel.ShowGlobal(w, l, r);
 
-        [ClientRpc]
-        private void RpcOnGoalScored(PlayerSide _) => OnGoal?.Invoke();
+        [ClientRpc] 
+        void RpcHideVictory() => VictoryPanel.HideGlobal();
 
         #endregion
 
@@ -233,7 +173,7 @@
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            Vector3 size = new(0f, this.m_halfFieldHeight, 0f);
+            Vector3 size = new(0f, this.m_halfCourt, 0f);
             Gizmos.DrawLine(this.transform.position - size, this.transform.position + size);
         }
 

@@ -6,6 +6,7 @@ namespace AndreaFrigerio.UI.Runtime.HUD
     using TMPro;
     using AndreaFrigerio.Core.Runtime.Gameplay;
     using AndreaFrigerio.Core.Runtime.Locator;
+    using UnityEngine.InputSystem;
 
     /// <summary>
     /// Pop-up shown at match end. Displays winner & scores and lets the
@@ -29,13 +30,18 @@ namespace AndreaFrigerio.UI.Runtime.HUD
         [BoxGroup("References")]
         [Tooltip("Target for graphics.")]
         [SerializeField, Required]
-        private GameObject m_graphicsTarget;
+        private GameObject m_root;
+
+        [BoxGroup("Settings")]
+        [Tooltip("")]
+        [SerializeField]
+        private InputActionReference m_escapeKey;
 
         #endregion
 
-        #region Static convenience
+        #region Static
 
-        private static VictoryPanel s_instance;
+        private static VictoryPanel s_self;
 
         /// <summary>
         /// Shows the panel on every client. Called by <c>PongGameManager</c>.
@@ -45,69 +51,105 @@ namespace AndreaFrigerio.UI.Runtime.HUD
         /// <param name="right">Right score.</param>
         public static void ShowGlobal(PlayerSide winner, int left, int right)
         {
-            s_instance?.Show(winner, left, right);
+            s_self?.Show(winner, left, right);
         }
 
         /// <summary>
         /// Hides the panel on every client. Called by <c>PongGameManager</c>.
         /// </summary>
-        public static void HideGlobal() => s_instance?.Hide();
+        public static void HideGlobal() => s_self?.Hide();
 
         #endregion
 
-        #region Unity
+        #region Unity Callbacks
 
         private void Awake()
         {
-            s_instance = this;
+            s_self = this;
             Hide();
         }
 
-        #endregion
-
-        #region UI display
-
-        /// <summary>
-        /// Fills texts and enables the panel.
-        /// </summary>
-        private void Show(PlayerSide winner, int left, int right)
+        private void OnEnable()
         {
-            Debug.Log($"VictoryPanel.Show({winner}, {left}, {right})");
-            this.m_graphicsTarget.SetActive(true);
-
-            string playerName = winner == PlayerSide.Left ? "PLAYER 1" : "PLAYER 2";
-            this.m_winnerText.SetText($"{playerName} WINS");
-            this.m_scoreText.SetText($"{left} – {right}");
-        }
-
-        /// <summary>
-        /// Hides the panel.
-        /// </summary>
-        public void Hide() => this.m_graphicsTarget.SetActive(false);
-
-        #endregion
-
-        #region Replay request
-
-        /// <summary>
-        /// Bound to the “Play Again” button. Sends a replay request to server.
-        /// </summary>
-        [Button("Request Replay")]
-        public void OnReplayPressed()
-        {
-            if (NetworkClient.active)
+            if (this.m_escapeKey != null)
             {
-                CmdRequestReplay();
-                Hide();
+                this.m_escapeKey.action.performed += OnEscapePerformed;
             }
         }
 
-        /// <summary>
-        /// Forwards replay request to the authoritative server.
-        /// </summary>
-        [Command]
-        private void CmdRequestReplay() =>
-            ServiceLocator.Get<PongGameManager>().ServerRequestReplay();
+        private void OnDisable()
+        {
+            if (this.m_escapeKey != null)
+            {
+                this.m_escapeKey.action.performed -= OnEscapePerformed;
+            }
+        }
+
+        #endregion
+
+        #region UI
+
+        private void Show(PlayerSide w, int l, int r)
+        {
+            this.m_root.SetActive(true);
+            this.m_winnerText.SetText(w == PlayerSide.Left ? "PLAYER 1 WINS" : "PLAYER 2 WINS");
+            this.m_scoreText.SetText($"{l} – {r}");
+        }
+
+        private void Hide() => this.m_root.SetActive(false);
+
+        #endregion
+
+        #region BUTTONS
+
+        [Button("Restart")]
+        public void OnRestart()
+        {
+            CmdRestart();
+        }
+
+        [Button("Quit")]
+        public void OnQuit()
+        {
+            CmdQuit();
+        }
+
+        private void OnEscapePerformed(InputAction.CallbackContext ctx)
+        {
+            CmdQuit();
+        }
+
+        #endregion
+
+        #region COMMANDS
+
+        [Command(requiresAuthority = false)]
+        private void CmdRestart(NetworkConnectionToClient sender = null)
+        {
+            if (ServiceLocator.TryGet(out PongGameManager gm))
+            {
+                Debug.Log("Vote");
+                gm.VoteRestart(sender.connectionId);
+            }
+            else
+            {
+                Debug.Log("<color=red>Voting doesn't possible, no game manager ");
+            }
+        }
+
+        [Command(requiresAuthority = false)]
+        void CmdQuit(NetworkConnectionToClient sender = null)
+        {
+            if (ServiceLocator.TryGet(out PongGameManager gm))
+            {
+                Debug.Log("Quit");
+                gm.VoteQuit();
+            }
+            else
+            {
+                Debug.Log("<color=red>Qutting doesn't possible, no game manager ");
+            }
+        }
 
         #endregion
     }

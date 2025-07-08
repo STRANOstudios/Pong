@@ -20,7 +20,7 @@ namespace AndreaFrigerio.Network.Runtime.Lobby
         {
             if (NetworkServer.active && NetworkClient.isConnected)
             {
-                NetworkManager.singleton.StopHost();   // host -> stop server & client
+                NetworkManager.singleton.StopHost(); // host -> stop server & client
             }
             else if (NetworkClient.isConnected)
             {

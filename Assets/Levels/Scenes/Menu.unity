@@ -128,9 +128,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 292481605}
+  - component: {fileID: 292481611}
   - component: {fileID: 292481606}
-  - component: {fileID: 292481609}
-  - component: {fileID: 292481610}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -184,7 +183,7 @@ MonoBehaviour:
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
---- !u!114 &292481609
+--- !u!114 &292481611
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,23 +192,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 292481604}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4ba17ccea24ddf429248157aa9bfbc7, type: 3}
+  m_Script: {fileID: 11500000, guid: c2075e50a8b375144913731ec7929795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &292481610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292481604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a63e9a23a153534bafa44259133268d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ipInputField: {fileID: 2053143655}
-  m_transport: {fileID: 292481606}
+  dontDestroyOnLoad: 1
+  runInBackground: 1
+  headlessStartMode: 0
+  editorAutoStart: 0
+  sendRate: 60
+  offlineScene: Assets/Levels/Scenes/Menu.unity
+  onlineScene: 
+  offlineSceneLoadDelay: 0
+  transport: {fileID: 292481606}
+  networkAddress: localhost
+  maxConnections: 4
+  disconnectInactiveConnections: 1
+  disconnectInactiveTimeout: 10
+  authenticator: {fileID: 0}
+  playerPrefab: {fileID: 6546663585090540520, guid: 7546cb57de355814185fe48b32f1ee1a, type: 3}
+  autoCreatePlayer: 1
+  playerSpawnMethod: 0
+  spawnPrefabs:
+  - {fileID: 3053829628350349659, guid: 332d169d18ae73949a0310ff87c5ae3f, type: 3}
+  exceptionsDisconnect: 1
+  snapshotSettings:
+    bufferTimeMultiplier: 2
+    bufferLimit: 32
+    catchupNegativeThreshold: -1
+    catchupPositiveThreshold: 1
+    catchupSpeed: 0.019999999552965164
+    slowdownSpeed: 0.03999999910593033
+    driftEmaDuration: 1
+    dynamicAdjustment: 1
+    dynamicAdjustmentTolerance: 1
+    deliveryTimeEmaDuration: 2
+  evaluationMethod: 0
+  evaluationInterval: 3
+  timeInterpolationGui: 0
+  m_leftSpawn: {x: -8, y: 0, z: 0}
+  m_rightSpawn: {x: 8, y: 0, z: 0}
+  gameplayScene: Assets/Levels/Scenes/PongOnline.unity
 --- !u!1 &321612533
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,6 +878,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slider (Sensitivity)
       objectReference: {fileID: 0}
+    - target: {fileID: 2295726911167762525, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3993396212542431731, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -985,9 +1011,29 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
       objectReference: {fileID: 1089152904}
+    - target: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
@@ -1031,17 +1077,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4511888622965835142, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
   m_PrefabInstance: {fileID: 455050681}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &455050683 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
-  m_PrefabInstance: {fileID: 455050681}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ec19f07ad931c4687355c8397d929c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1943,7 +1978,7 @@ PrefabInstance:
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 292481610}
+      objectReference: {fileID: 2141066188}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -1990,7 +2025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: AndreaFrigerio.Network.OnlineConnectionManager, Assembly-CSharp
+      value: AndreaFrigerio.Network.Runtime.MirrorConnectionController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -2220,7 +2255,7 @@ PrefabInstance:
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 292481610}
+      objectReference: {fileID: 2141066188}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -2267,7 +2302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: AndreaFrigerio.Network.OnlineConnectionManager, Assembly-CSharp
+      value: AndreaFrigerio.Network.Runtime.MirrorConnectionController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -2287,11 +2322,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
@@ -3283,7 +3318,7 @@ PrefabInstance:
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 292481609}
+      objectReference: {fileID: 2141066189}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -3330,7 +3365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
-      value: AndreaFrigerio.Network.LobbyUI, Assembly-CSharp
+      value: AndreaFrigerio.Network.Runtime.Lobby.LobbyUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
@@ -4207,7 +4242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84f7377408059e4f895ff54d1c180a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_inputField: {fileID: 0}
+  m_inputField: {fileID: 2053143655}
 --- !u!1001 &2132596180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4339,7 +4374,7 @@ PrefabInstance:
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 455050683}
+      objectReference: {fileID: 1089152904}
     - target: {fileID: 8774706355568969910, guid: 13804823e63024643acaa8676ef6e8ee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 3
@@ -4459,6 +4494,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2141066187}
   - component: {fileID: 2141066186}
+  - component: {fileID: 2141066189}
+  - component: {fileID: 2141066188}
   m_Layer: 0
   m_Name: Menu Controller
   m_TagString: Untagged
@@ -4494,6 +4531,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1133928618}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2141066188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141066185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a63e9a23a153534bafa44259133268d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ipInputField: {fileID: 2053143655}
+  m_transport: {fileID: 292481606}
+--- !u!114 &2141066189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141066185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4ba17ccea24ddf429248157aa9bfbc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4070384791225730229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4653,7 +4716,7 @@ PrefabInstance:
     - target: {fileID: 5897842560854121873, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 455050683}
+      objectReference: {fileID: 2132596183}
     - target: {fileID: 6024602473247178829, guid: 8e688c13507484742b6659e7f4d9603e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
