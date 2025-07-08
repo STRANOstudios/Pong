@@ -54,8 +54,6 @@ namespace AndreaFrigerio.Networking.Runtime.Mirror
 
             this.m_readyPlayers.Add(conn);
 
-            Debug.Log("<color=green>Player " + conn.connectionId + " connected.</color>");
-
             if (this.m_readyPlayers.Count == 2)
             {
                 Debug.Log("<color=green>Game started!</color>");
