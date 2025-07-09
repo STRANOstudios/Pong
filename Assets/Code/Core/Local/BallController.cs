@@ -21,7 +21,7 @@
     /// </summary>
     [HideMonoScript]
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     [AddComponentMenu("Andrea Frigerio/Local/Ball Controller")]
     public class BallController : MonoBehaviour
     {
@@ -101,7 +101,15 @@
             }
             else if (col.transform.CompareTag("Wall"))
             {
-                this.m_rb.linearVelocity = this.m_rb.linearVelocity.normalized * this.m_currentSpeed;
+                Vector2 velocity = this.m_rb.linearVelocity.normalized;
+
+                if (Mathf.Abs(velocity.y) < 0.1f)
+                {
+                    velocity.y = Mathf.Sign(UnityEngine.Random.Range(-1f, 1f)) * 0.2f;
+                    velocity = velocity.normalized;
+                }
+
+                this.m_rb.linearVelocity = velocity * m_currentSpeed;
                 HandleBounce(BounceType.Wall);
             }
         }
