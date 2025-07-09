@@ -106,7 +106,7 @@ These steps should allow you to copy a Unity project from GitHub, set it up in U
 
 ### Release
 
-[Download](coming soon)
+[Download](https://github.com/STRANOstudios/Pong/releases/tag/V0.0.1)
 
 ## Credits
 ### Sviluppo e Programmazione
