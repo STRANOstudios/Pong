@@ -1,9 +1,8 @@
-﻿namespace AndreaFrigerio.Core.Runtime.Gameplay
+﻿namespace AndreaFrigerio.Pong.Core.Local
 {
     using UnityEngine;
-    using UnityEngine.InputSystem;
-    using Mirror;
     using Sirenix.OdinInspector;
+    using UnityEngine.InputSystem;
 
     /// <summary>
     /// Server-authoritative paddle controller.
@@ -15,8 +14,8 @@
     [HideMonoScript]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(BoxCollider2D))]
-    [AddComponentMenu("Andrea Frigerio/Core/Gameplay/Paddle Controller")]
-    public sealed class PaddleController : NetworkBehaviour
+    [AddComponentMenu("Andrea Frigerio/Local/Paddle Controller")]
+    public class PaddleController : MonoBehaviour
     {
         #region Inspector
 
@@ -46,7 +45,7 @@
 
         #region Authority life-cycle
 
-        public override void OnStartAuthority()
+        public void Start()
         {
             if (this.m_moveAction == null)
             {
@@ -57,25 +56,14 @@
             this.m_moveAction.action.Enable();
         }
 
-        public override void OnStopAuthority() =>
-            this.m_moveAction?.action.Disable();
+        public void OnDisable() => this.m_moveAction?.action.Disable();
 
         #endregion
 
         #region Update loop
 
-        private void Awake()
-        {
-            syncDirection = SyncDirection.ClientToServer;
-        }
-
         private void Update()
         {
-            if (!this.authority)
-            {
-                return;
-            }
-
             this.m_cachedAxis = ReadAxis(); // −1 … +1
 
             if (Mathf.Abs(this.m_cachedAxis) < 0.001f) // no movement
@@ -88,14 +76,7 @@
                                         -this.m_courtHalfHeight,
                                          this.m_courtHalfHeight);
 
-            if (this.isServer) // host instance
-            {
-                ApplyServerY(targetY);
-            }
-            else // pure client
-            {
-                CmdRequestY(targetY);
-            }
+            MoveY(targetY);
         }
 
         #endregion
@@ -119,25 +100,12 @@
             return action.ReadValue<Vector2>().y;
         }
 
-        #endregion
-
-        #region Server authority
-
-        /// <summary>Applies the Y position immediately on the server.</summary>
-        [Server]
-        private void ApplyServerY(float y)
+        private void MoveY(float y)
         {
-            Vector3 pos = this.transform.position;
+            Vector3 pos = transform.position;
             pos.y = y;
-            this.transform.position = pos;
+            transform.position = pos;
         }
-
-        /// <summary>
-        /// Client → server request to move the paddle. The server clamps and applies.
-        /// </summary>
-        [Command/*(requiresAuthority = false)*/]
-        private void CmdRequestY(float y) =>
-            ApplyServerY(Mathf.Clamp(y, -this.m_courtHalfHeight, this.m_courtHalfHeight));
 
         #endregion
     }

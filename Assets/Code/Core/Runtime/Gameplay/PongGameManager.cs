@@ -78,6 +78,8 @@
         [Server]
         public void ServerAddScore(PlayerSide scorer)
         {
+            OnGoal?.Invoke();
+
             if (scorer == PlayerSide.Left)
             {
                 this.m_left++;

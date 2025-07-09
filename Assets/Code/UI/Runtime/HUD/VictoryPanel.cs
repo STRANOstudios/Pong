@@ -1,12 +1,12 @@
 namespace AndreaFrigerio.UI.Runtime.HUD
 {
     using UnityEngine;
+    using UnityEngine.InputSystem;
+    using TMPro;
     using Mirror;
     using Sirenix.OdinInspector;
-    using TMPro;
     using AndreaFrigerio.Core.Runtime.Gameplay;
     using AndreaFrigerio.Core.Runtime.Locator;
-    using UnityEngine.InputSystem;
 
     /// <summary>
     /// Pop-up shown at match end. Displays winner & scores and lets the
@@ -138,7 +138,7 @@ namespace AndreaFrigerio.UI.Runtime.HUD
         }
 
         [Command(requiresAuthority = false)]
-        void CmdQuit(NetworkConnectionToClient sender = null)
+        private void CmdQuit(NetworkConnectionToClient sender = null)
         {
             if (ServiceLocator.TryGet(out PongGameManager gm))
             {

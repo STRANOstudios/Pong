@@ -56,6 +56,8 @@ namespace AndreaFrigerio.Audio.Runtime.Library
         /// <param name="clipName">Identifier set in the Inspector list.</param>
         public void Play(string clipName)
         {
+            Debug.Log($"[AudioManager] Play '{clipName}'");
+
             ManagedAudioClip entry =
                 this.m_managedClips.Find(x => x.Name == clipName);
 

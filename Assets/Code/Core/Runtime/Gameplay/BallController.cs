@@ -59,8 +59,8 @@
         private int m_paddleHitCount;
         private byte m_speedLevel; // 0 = slow, 1 = medium, 2 = fast
 
-        private static event Action OnPaddleBounce;
-        private static event Action OnWallBounce;
+        public static event Action OnPaddleBounce;
+        public static event Action OnWallBounce;
 
         #endregion
 
